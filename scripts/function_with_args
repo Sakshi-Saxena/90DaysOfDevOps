@@ -1,14 +1,16 @@
 #!/bin/bash
 
 function greet(){
-	echo "Namaste $1"
+	name=$1
+	echo "Namaste $name"
 
 }
 
 
 function install_package(){
-  	echo "Installing $1"
-	sudo apt-get update && sudo apt-get install "$1" || echo "Not installed!"
+	pkg=$1
+  	echo "Installing $pkg"
+	sudo apt-get update && sudo apt-get install "$pkg" || echo "Not installed!"
 
 }
 
