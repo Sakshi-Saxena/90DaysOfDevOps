@@ -1,0 +1,20 @@
+#!/bin/bash
+
+function greet(){
+	echo "Namaste $1"
+
+}
+
+
+function install_package(){
+  	echo "Installing $1"
+	sudo apt-get update && sudo apt-get install "$1" || echo "Not installed!"
+
+}
+
+
+
+greet "jethalal"
+greet "babita"
+install_package "nginx"
+
