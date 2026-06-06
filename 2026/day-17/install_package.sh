@@ -15,7 +15,7 @@ do
 
 	echo "package $i installed!"
 	
-	sudo systemctl $i
+	sudo systemctl status $i
 
 done
 
