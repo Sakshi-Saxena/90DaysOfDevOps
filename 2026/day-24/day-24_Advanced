@@ -1,0 +1,264 @@
+1) What is a fast-forward merge?
+
+A fast-forward merge happens when the target branch has no new commits since the feature branch was created, so Git simply moves the pointer forward without creating a merge commit.
+
+👉 In short: linear history, no merge commit needed
+
+Example:
+
+main:    A --- B
+feature:       \--- C --- D
+
+After merge:
+
+main:    A --- B --- C --- D
+2) When does Git create a merge commit instead?
+
+Git creates a merge commit when both branches have diverged, meaning each branch has new commits that the other doesn’t have.
+
+👉 In short: non-linear history → Git needs a merge commit to combine histories
+
+Example:
+
+main:    A --- B --- E
+               \
+feature:        C --- D
+
+After merge:
+
+main:    A --- B --- E ------- M
+               \             /
+                C --------- D
+
+Here, M is the merge commit.
+
+3) What is a merge conflict?
+
+A merge conflict occurs when Git cannot automatically merge changes because the same part of a file was modified differently in both branches.
+
+👉 In short: Git doesn’t know which change to keep
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Here are **crisp, interview-style answers**:
+
+---
+
+## 1) What does rebase actually do to your commits?
+
+Rebase **rewrites commit history** by taking your commits and **reapplying them on top of another base branch**, creating **new commit IDs**.
+
+👉 In short: *it moves your commits to a new base as if they were created later*
+
+---
+
+## 2) How is the history different from a merge?
+
+* **Rebase**
+
+  * Produces a **linear, clean history**
+  * No extra merge commits
+  * Looks like work happened sequentially
+
+* **Merge**
+
+  * Preserves **true branch history**
+  * Creates a **merge commit**
+  * Shows when branches diverged and combined
+
+👉 In short:
+*Rebase = clean history*
+*Merge = accurate history*
+
+---
+
+## 3) Why should you never rebase commits that have been pushed and shared with others?
+
+Because rebase **changes commit hashes (history rewriting)**, which causes:
+
+* Conflicts for teammates
+* Duplicate commits
+* Broken shared history
+
+👉 In short: *it rewrites history others are already using, leading to chaos*
+
+---
+
+## 4) When would you use rebase vs merge?
+
+### Use **rebase** when:
+
+* Working on **local/feature branches**
+* You want a **clean, linear history**
+* Before merging your feature branch
+
+### Use **merge** when:
+
+* Working on **shared branches (like main/dev)**
+* You want to **preserve history**
+* Multiple people are collaborating
+
+---
+
+## 🔑 Final interview summary
+
+* Rebase rewrites commits → clean history
+* Merge preserves history → adds merge commit
+* Never rebase shared commits → breaks collaboration
+* Rebase for local cleanup, merge for team integration
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+Here are **crisp, interview-style answers**:
+
+---
+
+## 1) What does squash merging do?
+
+Squash merging **combines all commits from a feature branch into a single commit** and then applies that commit to the target branch.
+
+👉 In short: *multiple commits → one clean commit*
+
+---
+
+## 2) When would you use squash merge vs regular merge?
+
+### Use **squash merge** when:
+
+* You want a **clean, linear history**
+* The feature branch has **many small or messy commits**
+* You only care about the **final outcome**, not commit-by-commit history
+
+### Use **regular merge** when:
+
+* You want to **preserve full commit history**
+* The commits are meaningful and structured
+* You need traceability for debugging or auditing
+
+👉 In short:
+*Squash = clean history*
+*Merge = detailed history*
+
+---
+
+## 3) What is the trade-off of squashing?
+
+* You **lose individual commit history**
+* Harder to trace **step-by-step changes**
+* Debugging or reverting specific changes becomes less granular
+
+👉 In short: *clean history at the cost of detailed history*
+
+---
+
+## 🔑 Final interview summary
+
+* Squash → compress commits into one
+* Use it for clean history and PR merges
+* Trade-off → lose commit-level detail and traceability
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Here are **concise, interview-style answers**:
+
+---
+
+## 1) What is the difference between `git stash pop` and `git stash apply`?
+
+* **`git stash apply`**
+
+  * Applies the stashed changes **but keeps them in the stash list**
+  * You can reuse the same stash later
+
+* **`git stash pop`**
+
+  * Applies the stashed changes **and removes it from the stash list**
+
+👉 In short:
+*apply = use + keep*
+*pop = use + delete*
+
+---
+
+## 2) When would you use stash in a real-world workflow?
+
+You use `git stash` when you need to **temporarily save uncommitted changes** without committing them.
+
+### Common scenarios:
+
+* Switching branches quickly without committing incomplete work
+* Pulling latest changes but your working directory is dirty
+* Handling urgent bug fixes while mid-development
+* Testing something without affecting current progress
+
+👉 Example workflow:
+
+```bash
+git stash
+git switch main
+# fix bug
+git switch feature
+git stash pop
+```
+
+---
+
+## 🔑 Final interview summary
+
+* `stash apply` → applies changes, keeps stash
+* `stash pop` → applies and removes stash
+* Stash is used for **temporary work-in-progress storage** during context switching
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Here are **crisp, interview-style answers**:
+
+---
+
+## 1) What does cherry-pick do?
+
+`git cherry-pick` **applies a specific commit from one branch onto another branch**, creating a **new commit with a new hash**.
+
+👉 In short: *copy a commit, don’t merge the whole branch*
+
+---
+
+## 2) When would you use cherry-pick in a real project?
+
+* Applying a **hotfix** from one branch (e.g., `main`) to another (e.g., `release`)
+* Moving a **specific bug fix** without bringing unrelated changes
+* Backporting fixes to **older versions**
+* Recovering or reusing a **lost or missed commit**
+
+👉 Example:
+
+```bash
+git cherry-pick <commit-hash>
+```
+
+---
+
+## 3) What can go wrong with cherry-picking?
+
+* **Duplicate commits** in history (same change, different hashes)
+* **Merge conflicts** if context differs
+* Harder to track changes across branches
+* Can create **inconsistent history** if overused
+
+👉 In short: *useful but can make history messy if not controlled*
+
+---
+
+## 🔑 Final interview summary
+
+* Cherry-pick copies a specific commit to another branch
+* Used for targeted fixes (hotfix/backport)
+* Trade-off → duplicate history and possible conflicts
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
